@@ -1,6 +1,8 @@
 # plain-promises [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > A simple promises implementation
+This is intended as a simple way to implement promises as an example of how-to.
 
+Currently is Under Construction...needs work
 
 ## Install
 
@@ -12,9 +14,8 @@ $ npm install --save plain-promises
 ## Usage
 
 ```js
-var plainPromises = require('plain-promises');
+var Prm = require('plain-promises');
 
-plainPromises('Rainbow');
 ```
 
 ## License

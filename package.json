@@ -1,6 +1,6 @@
 {
   "name": "plain-promises",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A simple promises implementation",
   "homepage": "",
   "repository": "ralucas/plain-promises",
