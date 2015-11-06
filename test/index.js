@@ -37,21 +37,19 @@ describe('plain-promises', function () {
         ans = test();
       });
 
-      it('should create a deferred object', function(done) {
-        assert(typeof(ans) == 'object');
+      it('should create a thenable deferred object', function(done) {
+        assert(typeof(ans) === 'object');
         assert(ans.hasOwnProperty('then'), 'it is thenable');
-        assert(typeof(ans.then) == 'function', 'and then is a function');
-        console.log(ans.then);
+        assert(typeof(ans.then) === 'function', 'and then is a function');
         done();
       });
 
       it('`then` should return a callback with data', function(done) {
         ans.then(function(data) {
-          console.log('data:', data);
           assert(data, 'received some data');
-          assert(typeof(data) == "object", 'received an object type that is an array')
+          assert(typeof(data) === "object", 'received an object type that is an array')
           assert(data.length > 0, 'confirmed that received an array');
-          assert(typeof(data[2]) == 'string', 'picked an item that is a string');
+          assert(typeof(data[2]) === 'string', 'picked an item that is a string');
           done();
         });
       });
@@ -71,18 +69,33 @@ describe('plain-promises', function () {
         ans = test();
       });
       
+      it('should create a failable deferred object', function(done) {
+        assert(ans.hasOwnProperty('fail'), 'it is failable');
+        assert(typeof(ans.fail) === 'function', 'and fail is a function');
+        done();
+      });
+
       it('should call `fail` with an error in the callback', function(done) {
-        ans.then(function(data) {
-          //This should NOT be called
-          console.log('Should NOT have been called:', data);
-          assert.fail(data, '', 'I should NOT have been called');
-        }).fail(function(err) {
-          console.log('Error:', err);
+        ans.fail(function(err) {
           assert(err);
-          assert(/Exists/.test(err));
           assert(/testing/.test(err));
+          done();
         });
       });
+
+      it('should be chainable, `then` should not be called with `fail` called', function(done) {
+        ans.then(function(data) {
+          //This should NOT be called
+          assert.fail(data, '', 'I should NOT have been called');
+        })
+        .fail(function(err) {
+          assert(err);
+          assert(/testing/.test(err));
+          done();
+        });
+      
+      });
+
     });
   });
 

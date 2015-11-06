@@ -27,7 +27,7 @@
   },
   "scripts": {
     "prepublish": "gulp prepublish",
-    "test": "gulp"
+    "test": "./node_modules/.bin/mocha"
   },
   "license": "MIT"
 }
