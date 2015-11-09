@@ -10,29 +10,29 @@ describe('plain-promises', function () {
     assert(typeof(Prm) === 'object');
   });
 
-  describe('and the deferred object', function() {
+  describe('and the deferredred object', function() {
 
     it('should have resolve and reject methods', function() {
-      var defer = Prm.defer();
-      assert(defer.resolve);
-      assert(defer.reject);
+      var deferred = Prm.deferred();
+      assert(deferred.resolve);
+      assert(deferred.reject);
     });
 
     it('should have a promise', function() {
-      var defer = Prm.defer();
-      assert(defer.promise);
+      var deferred = Prm.deferred();
+      assert(deferred.promise);
     });
 
     describe('creating a promise', function() {
       var test, ans;
       beforeEach(function() {
         test = function() {
-          var defer = Prm.defer();
+          var deferred = Prm.deferred();
           fs.readdir('./', function(err, files) {
-            if (err) defer.reject('Test Error!!!!');
-            defer.resolve(files); 
+            if (err) deferred.reject('Test Error!!!!');
+            deferred.resolve(files); 
           });
-          return defer.promise;
+          return deferred.promise;
         };
         ans = test();
       });
@@ -59,12 +59,12 @@ describe('plain-promises', function () {
       var test, ans;
       beforeEach(function() {
         test = function() {
-          var defer = Prm.defer();
+          var deferred = Prm.deferred();
           fs.readFile('filethatdoesnotexist.dne', function(err, data) {
-            if (err) defer.reject('Expect this testing error');
-            defer.resolve(data); 
+            if (err) deferred.reject('Expect this testing error');
+            deferred.resolve(data); 
           });
-          return defer.promise;
+          return deferred.promise;
         };
         ans = test();
       });
@@ -99,4 +99,7 @@ describe('plain-promises', function () {
     });
   });
 
+  describe('Promises/A+ Tests', function () {
+    require('promises-aplus-tests').mocha(Prm);
+  });
 });

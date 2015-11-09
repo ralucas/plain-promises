@@ -7,6 +7,17 @@ var istanbul = require('gulp-istanbul');
 var nsp = require('gulp-nsp');
 var plumber = require('gulp-plumber');
 
+function getArgs() {
+  var output = {};
+  var args = process.argv.slice(3);
+  args.forEach(function(arg) {
+    var split = arg.split('=');
+    var key = split[0].replace(/\W/g, '');
+    output[key] = split[1];
+  });
+  return output;
+}
+
 gulp.task('static', function () {
   return gulp.src('**/*.js')
     .pipe(excludeGitignore())
@@ -38,6 +49,28 @@ gulp.task('test', ['pre-test'], function (cb) {
     .on('end', function () {
       cb(mochaErr);
     });
+});
+
+gulp.task('mochaTest', function (cb) {
+  var mochaErr;
+
+  gulp.src('test/*.js')
+    .pipe(plumber())
+    .pipe(mocha({
+      reporter: 'spec',
+      grep: getArgs().grep,
+      bail: true
+    }))
+    .on('error', function (err) {
+      mochaErr = err;
+    })
+    .on('end', function () {
+      cb(mochaErr);
+    });
+});
+
+gulp.task('watch', function() {
+  gulp.watch('lib/*.js', ['mochaTest']);
 });
 
 gulp.task('prepublish', ['nsp']);
