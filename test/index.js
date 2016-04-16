@@ -68,34 +68,14 @@ describe('plain-promises', function () {
         };
         ans = test();
       });
-      
-      it('should create a failable deferred object', function(done) {
-        assert(ans.hasOwnProperty('fail'), 'it is failable');
-        assert(typeof(ans.fail) === 'function', 'and fail is a function');
-        done();
-      });
 
-      it('should call `fail` with an error in the callback', function(done) {
-        ans.fail(function(err) {
+      it('should call onRejected with an error in the callback', function(done) {
+        ans.then(null, function(err) {
           assert(err);
           assert(/testing/.test(err));
           done();
         });
       });
-
-      it('should be chainable, `then` should not be called with `fail` called', function(done) {
-        ans.then(function(data) {
-          //This should NOT be called
-          assert.fail(data, '', 'I should NOT have been called');
-        })
-        .fail(function(err) {
-          assert(err);
-          assert(/testing/.test(err));
-          done();
-        });
-      
-      });
-
     });
   });
 
